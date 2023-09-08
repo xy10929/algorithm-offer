@@ -4,16 +4,15 @@ import java.util.HashMap;
 
 public class Problem_0001_TwoSum {
 
-	public static int[] twoSum(int[] nums, int target) {
-		// key 某个之前的数   value 这个数出现的位置
+	public int[] twoSum(int[] arr, int target) {
 		HashMap<Integer, Integer> map = new HashMap<>();
-		for (int i = 0; i < nums.length; i++) {
-			if (map.containsKey(target - nums[i])) {
-				return new int[] { map.get(target - nums[i]), i };
+		for (int i = 0; i < arr.length; i++) {
+			if (map.containsKey(target - arr[i])) {// 记录之前检查target-当前值是否已经作为key存在 是则找到了一组结果
+				return new int[] { i, map.get(target - arr[i]) };
 			}
-			map.put(nums[i], i);
+			map.put(arr[i], i);// 记录值和位置
 		}
-		return new int[] { -1, -1 };
+		return new int[] {};
 	}
 
 }
