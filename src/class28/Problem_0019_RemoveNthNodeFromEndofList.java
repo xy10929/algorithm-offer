@@ -1,7 +1,24 @@
 package class28;
 
 public class Problem_0019_RemoveNthNodeFromEndofList {
-	
+
+	public ListNode removeNthFromEnd(ListNode head, int n) {
+		ListNode fast = head;
+		for (int i = 0; i < n; i++) {// fast走n步
+			fast = fast.next;
+		}
+		if (fast == null) {// 需要删去head
+			return head.next;
+		}
+		ListNode slow = head;
+		while (fast.next != null) {// fast继续走到末尾节点
+			slow = slow.next;
+			fast = fast.next;
+		}
+		slow.next = slow.next.next;// 删去slow的下一个节点
+		return head;
+	}
+
 //    public ListNode removeNthFromEnd(ListNode head, int n) {
 //        ListNode start = new ListNode(0);
 //        start.next = head;
@@ -23,7 +40,7 @@ public class Problem_0019_RemoveNthNodeFromEndofList {
 		public ListNode next;
 	}
 
-	public static ListNode removeNthFromEnd(ListNode head, int n) {
+	public static ListNode removeNthFromEnd1(ListNode head, int n) {
 		ListNode cur = head;
 		ListNode pre = null;
 		while (cur != null) {
