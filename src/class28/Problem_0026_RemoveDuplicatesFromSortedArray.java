@@ -18,7 +18,22 @@ package class28;
 
 public class Problem_0026_RemoveDuplicatesFromSortedArray {
 
-	public static int removeDuplicates(int[] nums) {
+	public int removeDuplicates(int[] arr) {
+		int f = 0;// 有效区末尾
+		int cur = 0;// 当前位置
+		while (cur < arr.length) {
+			if (arr[f] == arr[cur]) {// 当前数已在有效区存在 有效区不扩充
+				cur++;
+			} else {// 扩充有效区
+				f++;
+				arr[f] = arr[cur];
+				cur++;
+			}
+		}
+		return f + 1;// 有效区大小
+	}
+
+	public static int removeDuplicates1(int[] nums) {
 		if (nums == null) {
 			return 0;
 		}

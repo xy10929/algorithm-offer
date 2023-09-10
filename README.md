@@ -8,6 +8,8 @@ Leetcode problems in data stucture & algorithm course by [Chengyun Zuo](https://
 - [class28](#class28)
   - [lc14 求所有字符串的最长公共前缀](#lc14)
   - [lc19 删去链表倒数第 n 个节点](#lc19)
+  - [lc26 把升序数组去重 并返回数字种类数](#lc26)
+  - [lc36 9\*9 的矩阵表示 9 个 3\*3 数独 判断已填的数是否使整体还有效](#lc36)
 
 ## class27
 
@@ -81,5 +83,59 @@ public ListNode removeNthFromEnd(ListNode head, int n) {
   }
   slow.next = slow.next.next;// 删去slow的下一个节点
   return head;
+}
+```
+
+### lc26
+
+@把升序数组去重 并返回数字种类数
+
+用 cur 指针指向要查看的位置 用 f 指针指向有效区的末尾  
+每次通过比较两指针内容决定是否扩充有效区 直至 cur 到末尾
+
+```java
+public int removeDuplicates(int[] arr) {
+  int f = 0;// 有效区末尾
+  int cur = 0;// 当前位置
+  while (cur < arr.length) {
+    if (arr[f] == arr[cur]) {// 当前数已在有效区存在 有效区不扩充
+      cur++;
+    } else {// 扩充有效区
+      f++;
+      arr[f] = arr[cur];
+      cur++;
+    }
+  }
+  return f + 1;// 有效区大小
+}
+```
+
+### lc36
+
+@9\*9 的矩阵表示 9 个 3\*3 数独 判断已填的数是否使整体还有效
+
+遍历整个矩阵 对于每个已经填数的位置:  
+用 3 个 boolean 二维数组分别记录 9 个行/列/子数独中各个数字是否已经存在 如果存在则返回无效 否则把该存在的信息记入三个数组
+
+```java
+public boolean isValidSudoku(char[][] board) {
+  boolean[][] row = new boolean[9][10];// 某行中数字1-9是否已存在
+  boolean[][] col = new boolean[9][10];
+  boolean[][] box = new boolean[9][10];// 某子数独中数字1-9是否已存在
+  for (int i = 0; i < 9; i++) {
+    for (int j = 0; j < 9; j++) {
+      if (board[i][j] != '.') {// 该位置有数字
+        int num = board[i][j] - '0';
+        int sub = (i / 3) * 3 + (j / 3);// 子数独编号
+        if (row[i][num] || col[j][num] || box[sub][num]) {// 无效判断
+          return false;
+        }
+        row[i][num] = true;
+        col[j][num] = true;
+        box[sub][num] = true;
+      }
+    }
+  }
+  return true;
 }
 ```
