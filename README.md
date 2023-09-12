@@ -10,6 +10,10 @@ Leetcode problems in data stucture & algorithm course by [Chengyun Zuo](https://
   - [lc19 删去链表倒数第 n 个节点](#lc19)
   - [lc26 把升序数组去重 并返回数字种类数](#lc26)
   - [lc36 9\*9 的矩阵表示 9 个 3\*3 数独 判断已填的数是否使整体还有效](#lc36)
+- [class29](#class29)
+  - [lc66 数组表示一个数 返回其+1 后的对应数组](#lc66)
+  - [lc69 求一个数开方后的结果的整数部分](#lc69)
+  - [lc73 把矩阵中 0 所在的行和列都归零](#lc73)
 
 ## class27
 
@@ -137,5 +141,91 @@ public boolean isValidSudoku(char[][] board) {
     }
   }
   return true;
+}
+```
+
+## class29
+
+### lc66
+
+@数组表示一个数 返回其+1 后的对应数组
+
+从低位开始把数+1, 如果未进位则直接返回 如果最后也未返回说明原数每一位都是 9
+
+```java
+public int[] plusOne(int[] arr) {
+  int n = arr.length;
+  for (int i = n - 1; i >= 0; i--) {
+    if (arr[i] < 9) {
+      arr[i]++;
+      return arr;
+    }
+    arr[i] = 0;
+  }
+  // 仍未return说明原数每一位都是9
+  int[] ans = new int[n + 1];
+  ans[0] = 1;
+  return ans;
+}
+```
+
+### lc69
+
+@求一个数 x 开方后的结果的整数部分
+
+在 1 到 x 间用二分法求结果  
+计算平方时可能会对于 int 越界 所以使用 long
+
+```java
+public int mySqrt(int x) {
+  if (x == 0) {
+    return 0;
+  }
+  long ans = 0;
+  long start = 1;
+  long end = x;
+  long m = 0;
+  while (start <= end) {// 二分范围上有数
+    m = (start + end) / 2;
+    if (m * m <= x) {// m^2不超过x, 先设为ans, 尝试更大的结果
+      ans = m;
+      start = m + 1;
+    } else {
+      end = m - 1;
+    }
+  }
+  return (int) ans;
+}
+```
+
+### lc73
+
+@把矩阵中 0 所在的行和列都归零
+
+准备两个 boolean 数组 记录各行/列是否应该归零  
+遍历矩阵 遇到 0 时在两个数组中记录对应的行&列应该归零  
+再次遍历矩阵 根据两个数组的记录进行归零
+
+```java
+public void setZeroes(int[][] matrix) {
+  int n = matrix.length;
+  int m = matrix[0].length;
+  boolean[] row = new boolean[n];
+  boolean[] col = new boolean[m];
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++) {
+      if (matrix[i][j] == 0) {// 遇到0, 记录对应的行列应该归零
+        row[i] = true;
+        col[j] = true;
+      }
+    }
+  }
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++) {
+      if (row[i] || col[j]) {// 记录中的行列归零
+        matrix[i][j] = 0;
+      }
+    }
+  }
 }
 ```

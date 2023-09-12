@@ -24,6 +24,28 @@ package class29;
 //}
 public class Problem_0073_SetMatrixZeroes {
 
+	public void setZeroes(int[][] matrix) {
+		int n = matrix.length;
+		int m = matrix[0].length;
+		boolean[] row = new boolean[n];
+		boolean[] col = new boolean[m];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (matrix[i][j] == 0) {// 遇到0, 记录对应的行列应该归零
+					row[i] = true;
+					col[j] = true;
+				}
+			}
+		}
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (row[i] || col[j]) {// 记录中的行列归零
+					matrix[i][j] = 0;
+				}
+			}
+		}
+	}
+
 	public static void setZeroes1(int[][] matrix) {
 		boolean row0Zero = false;
 		boolean col0Zero = false;
