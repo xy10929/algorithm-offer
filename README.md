@@ -14,6 +14,9 @@ Leetcode problems in data stucture & algorithm course by [Chengyun Zuo](https://
   - [lc66 数组表示一个数 返回其+1 后的对应数组](#lc66)
   - [lc69 求一个数开方后的结果的整数部分](#lc69)
   - [lc73 把矩阵中 0 所在的行和列都归零](#lc73)
+- [class30](#class30)
+  - [lc79 求从矩阵任意位置开始上下左右不重复地走 能否形成目标字符串](#lc79)
+  - [lc88 把一个有序数组 merge 进另一个](#lc88)
 
 ## class27
 
@@ -226,6 +229,75 @@ public void setZeroes(int[][] matrix) {
         matrix[i][j] = 0;
       }
     }
+  }
+}
+```
+
+## class30
+
+### lc79
+
+@求从矩阵任意位置开始上下左右不重复地走 能否形成目标字符串
+
+创建递归函数 返回从矩阵某位置开始 能否走出目标字符串某位置开始的内容  
+遍历矩阵所以位置 代入递归函数验证
+
+```java
+public boolean exist(char[][] board, String word) {
+  char[] w = word.toCharArray();
+  for (int i = 0; i < board.length; i++) {
+    for (int j = 0; j < board[0].length; j++) {
+      if (f(board, i, j, w, 0)) {// 对每个位置开始的情况进行验证
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+public boolean f(char[][] b, int i, int j, char[] w, int k) {// 从(i,j)开始能否形成w从k位置开始的内容
+  if (k == w.length) {// 匹配成功
+    return true;
+  }
+  if (i < 0 || i == b.length || j < 0 || j == b[0].length) {// 走出界
+    return false;
+  }
+  if (b[i][j] != w[k]) {// 当前位置不匹配
+    return false;
+  }
+  char cur = b[i][j];// 每个位置不能重复使用 先记录其内容 改为无法匹配的结果 函数return前还原
+  b[i][j] = 0;
+  boolean ans = f(b, i, j + 1, w, k + 1) || f(b, i, j - 1, w, k + 1) || f(b, i + 1, j, w, k + 1)
+      || f(b, i - 1, j, w, k + 1);
+  b[i][j] = cur;
+  return ans;
+}
+```
+
+### lc88
+
+@把一个有序数组 merge 进另一个 其已经有它们的总长度 后面的空位为 0
+
+准备两个指针指向有效数字的结尾 从后往前填入长数组
+
+```java
+public void merge(int[] arr1, int m, int[] arr2, int n) {
+  int p1 = m - 1;
+  int p2 = n - 1;
+  int i = m + n - 1;
+  while (p1 >= 0 && p2 >= 0) {// 两数组的数都未用尽
+    if (arr1[p1] >= arr2[p2]) {
+      arr1[i--] = arr1[p1--];
+    } else {
+      arr1[i--] = arr2[p2--];
+    }
+  }
+  // 其中一个数组的数已用尽
+  while (p1 >= 0) {
+    arr1[i--] = arr1[p1--];
+  }
+  while (p2 >= 0) {
+    arr1[i--] = arr2[p2--];
   }
 }
 ```
