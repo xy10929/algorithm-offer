@@ -17,6 +17,7 @@ Leetcode problems in data stucture & algorithm course by [Chengyun Zuo](https://
 - [class30](#class30)
   - [lc79 求从矩阵任意位置开始上下左右不重复地走 能否形成目标字符串](#lc79)
   - [lc88 把一个有序数组 merge 进另一个](#lc88)
+  - [lc108 根据有序数组建立 BST](#lc108)
 
 ## class27
 
@@ -299,5 +300,31 @@ public void merge(int[] arr1, int m, int[] arr2, int n) {
   while (p2 >= 0) {
     arr1[i--] = arr2[p2--];
   }
+}
+```
+
+### lc108
+
+@根据有序数组建立 BST
+
+建立递归函数生成 BST, 数组坐标范围作为参数
+
+```java
+public TreeNode sortedArrayToBST(int[] arr) {
+  return f(arr, 0, arr.length - 1);
+}
+
+public TreeNode f(int[] arr, int l, int r) {
+  if (l > r) {
+    return null;
+  }
+  if (l == r) {
+    return new TreeNode(arr[l]);
+  }
+  int m = (l + r) / 2;
+  TreeNode head = new TreeNode(arr[m]);
+  head.left = f(arr, l, m - 1);
+  head.right = f(arr, m + 1, r);
+  return head;
 }
 ```
